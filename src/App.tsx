@@ -19,11 +19,14 @@ import {
   Phone,
   PointerIcon,
   UserRound,
+  Moon,
+  Sun,
 } from "lucide-react";
 
 const Portfolio = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,28 +53,28 @@ const Portfolio = () => {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-cyan-50 text-gray-900 relative overflow-hidden">
+    <div className={`min-h-screen ${isDarkMode ? 'bg-gray-900 text-gray-100' : 'bg-gradient-to-br from-blue-50 via-white to-cyan-50 text-gray-900'} relative overflow-hidden transition-colors duration-300`}>
       {/* Animated Background Elements */}
       <div className="fixed inset-0 z-0 overflow-hidden">
-        <div className="absolute top-20 left-10 w-96 h-96 bg-blue-300/30 rounded-full mix-blend-multiply filter blur-3xl animate-blob"></div>
-        <div className="absolute top-40 right-10 w-96 h-96 bg-cyan-300/30 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-1/2 w-96 h-96 bg-blue-400/30 rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000"></div>
+        <div className={`absolute top-20 left-10 w-96 h-96 ${isDarkMode ? 'bg-blue-600/20' : 'bg-blue-300/30'} rounded-full mix-blend-multiply filter blur-3xl animate-blob`}></div>
+        <div className={`absolute top-40 right-10 w-96 h-96 ${isDarkMode ? 'bg-cyan-600/20' : 'bg-cyan-300/30'} rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-2000`}></div>
+        <div className={`absolute -bottom-8 left-1/2 w-96 h-96 ${isDarkMode ? 'bg-blue-500/20' : 'bg-blue-400/30'} rounded-full mix-blend-multiply filter blur-3xl animate-blob animation-delay-4000`}></div>
       </div>
 
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-white/70 backdrop-blur-lg z-50 border-b border-blue-100 shadow-sm">
+      <nav className={`fixed top-0 w-full ${isDarkMode ? 'bg-gray-900/80' : 'bg-white/70'} backdrop-blur-lg z-50 ${isDarkMode ? 'border-gray-700' : 'border-blue-100'} border-b shadow-sm`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center shadow-md">
+              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center shadow-md">
                 <Code2 className="w-6 h-6 text-white" />
               </div>
-              <span className="text-xl font-bold bg-linear-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+              <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
                 Vítor Ornelas
               </span>
             </div>
 
-            <div className="hidden md:flex space-x-8">
+            <div className="hidden md:flex items-center space-x-8">
               {["home", "about", "skills", "experience", "contact"].map(
                 (item) => (
                   <button
@@ -80,7 +83,7 @@ const Portfolio = () => {
                     className={`capitalize transition-all font-medium ${
                       activeSection === item
                         ? "text-blue-600 border-b-2 border-blue-600"
-                        : "text-gray-600 hover:text-blue-600"
+                        : `${isDarkMode ? 'text-gray-300 hover:text-blue-400' : 'text-gray-600 hover:text-blue-600'}`
                     }`}
                   >
                     {item === "home"
@@ -95,24 +98,40 @@ const Portfolio = () => {
                   </button>
                 )
               )}
+              <button
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className={`p-2 rounded-lg ${isDarkMode ? 'hover:bg-gray-800 text-yellow-400' : 'hover:bg-blue-50 text-blue-600'} transition-colors`}
+                aria-label="Alternar modo escuro"
+              >
+                {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </button>
             </div>
 
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-blue-50 text-blue-600"
-            >
-              {isMenuOpen ? <X /> : <Menu />}
-            </button>
+            <div className="md:hidden flex items-center gap-2">
+              <button
+                onClick={() => setIsDarkMode(!isDarkMode)}
+                className={`p-2 rounded-lg ${isDarkMode ? 'hover:bg-gray-800 text-yellow-400' : 'hover:bg-blue-50 text-blue-600'} transition-colors`}
+                aria-label="Alternar modo escuro"
+              >
+                {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </button>
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className={`p-2 rounded-lg ${isDarkMode ? 'hover:bg-gray-800 text-blue-400' : 'hover:bg-blue-50 text-blue-600'}`}
+              >
+                {isMenuOpen ? <X /> : <Menu />}
+              </button>
+            </div>
           </div>
 
           {isMenuOpen && (
-            <div className="md:hidden py-4 space-y-2 bg-white/90 border-t border-blue-100 backdrop-blur-sm">
+            <div className={`md:hidden py-4 space-y-2 ${isDarkMode ? 'bg-gray-900/90 border-gray-700' : 'bg-white/90 border-blue-100'} border-t backdrop-blur-sm`}>
               {["home", "about", "skills", "experience", "contact"].map(
                 (item) => (
                   <button
                     key={item}
                     onClick={() => scrollToSection(item)}
-                    className="block w-full text-left px-4 py-2 capitalize hover:bg-blue-50 rounded-lg text-gray-700 hover:text-blue-600"
+                    className={`block w-full text-left px-4 py-2 capitalize ${isDarkMode ? 'hover:bg-gray-800 text-gray-300 hover:text-blue-400' : 'hover:bg-blue-50 text-gray-700 hover:text-blue-600'} rounded-lg`}
                   >
                     {item === "home"
                       ? "Início"
@@ -140,10 +159,10 @@ const Portfolio = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="flex justify-center md:justify-end order-2 md:order-1">
               <div className="relative group">
-                <div className="absolute -inset-4 bg-linear-to-r from-blue-400 to-cyan-400 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
-                <div className="relative w-72 h-72 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-2xl bg-linear-to-br from-blue-100 to-cyan-100">
-                  <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-blue-400 to-cyan-500">
-                    <img src="/photo.jpg" alt="Foto de Vítor César" />
+                <div className="absolute -inset-4 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full blur-2xl opacity-40 group-hover:opacity-60 transition-opacity"></div>
+                <div className="relative w-72 h-72 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-2xl bg-gradient-to-br from-blue-100 to-cyan-100">
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-400 to-cyan-500">
+                    <img src="/photo.jpg" alt="Foto de Vítor César" className="w-full h-full object-cover" />
                   </div>
                 </div>
               </div>
@@ -154,16 +173,16 @@ const Portfolio = () => {
                 👋 Bem-vindo ao meu portfólio
               </div>
               <h1 className="text-4xl sm:text-6xl font-bold mb-4">
-                <span className="bg-linear-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
                   Vítor César
                 </span>
                 <br />
-                <span className="text-gray-800">Gonçalves Ornelas</span>
+                <span className={isDarkMode ? 'text-gray-100' : 'text-gray-800'}>Gonçalves Ornelas</span>
               </h1>
-              <p className="text-xl sm:text-2xl text-gray-700 mb-4 font-semibold">
+              <p className={`text-xl sm:text-2xl ${isDarkMode ? 'text-gray-300' : 'text-gray-700'} mb-4 font-semibold`}>
                 Desenvolvedor Full Stack
               </p>
-              <p className="text-lg text-gray-600 mb-8 max-w-xl">
+              <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} mb-8 max-w-xl`}>
                 Transformando ideias em soluções digitais há mais de 5 anos.
                 Especialista em modernização de sistemas e arquiteturas
                 escaláveis.
@@ -190,14 +209,14 @@ const Portfolio = () => {
                 </a>
                 <button
                   onClick={() => scrollToSection("contact")}
-                  className="flex items-center gap-2 px-6 py-3 bg-linear-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white rounded-lg transition-all transform hover:scale-105 shadow-lg"
+                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white rounded-lg transition-all transform hover:scale-105 shadow-lg"
                 >
                   <Mail className="w-5 h-5" />
                   Contato
                 </button>
               </div>
 
-              <div className="flex flex-wrap items-center gap-6 text-sm text-gray-600">
+              <div className={`flex flex-wrap items-center gap-6 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-blue-500" />
                   Palmas, TO
@@ -224,15 +243,15 @@ const Portfolio = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              <span className="bg-linear-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
                 Sobre Mim
               </span>
             </h2>
-            <div className="w-24 h-1 bg-linear-to-r from-blue-500 to-cyan-500 mx-auto rounded-full"></div>
+            <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto rounded-full"></div>
           </div>
 
-          <div className="bg-white/60 backdrop-blur-lg rounded-3xl p-10 border border-blue-100 shadow-xl mb-12">
-            <p className="text-lg text-gray-700 leading-relaxed mb-6">
+          <div className={`${isDarkMode ? 'bg-gray-800/60' : 'bg-white/60'} backdrop-blur-lg rounded-3xl p-10 ${isDarkMode ? 'border-gray-700' : 'border-blue-100'} border shadow-xl mb-12`}>
+            <p className={`text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-700'} leading-relaxed mb-6`}>
               Olá! Sou desenvolvedor Full Stack com mais de 5 anos de
               experiência, apaixonado por criar soluções digitais que fazem
               diferença. Formado em{" "}
@@ -243,14 +262,14 @@ const Portfolio = () => {
               <strong className="text-blue-600">Sistemas Computacionais</strong>
               .
             </p>
-            <p className="text-lg text-gray-700 leading-relaxed mb-6">
+            <p className={`text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-700'} leading-relaxed mb-6`}>
               Atuo como empresário à frente da{" "}
               <strong className="text-blue-600">Nortix Code</strong>,
               desenvolvedor freelancer e professor de Lógica de Programação e
               Desenvolvimento Web. Minha missão é compartilhar conhecimento e
               formar novos talentos na área de tecnologia.
             </p>
-            <p className="text-lg text-gray-700 leading-relaxed">
+            <p className={`text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-700'} leading-relaxed`}>
               Especializado em{" "}
               <strong className="text-cyan-600">
                 modernização de sistemas legados
@@ -260,8 +279,70 @@ const Portfolio = () => {
             </p>
           </div>
 
+          {/* Timeline Section */}
+          <div className="mb-12">
+            <h3 className={`text-3xl font-bold text-center mb-8 ${isDarkMode ? 'text-gray-100' : 'text-gray-800'}`}>
+              Trajetória Profissional
+            </h3>
+            <div className="relative max-w-4xl mx-auto">
+              <div className={`absolute left-1/2 transform -translate-x-1/2 w-1 h-full ${isDarkMode ? 'bg-gray-700' : 'bg-blue-200'}`}></div>
+              
+              {/* Timeline Item 1 */}
+              <div className="mb-8 flex justify-between items-center w-full">
+                <div className="order-1 w-5/12"></div>
+                <div className="z-20 flex items-center order-1 bg-blue-600 shadow-xl w-8 h-8 rounded-full">
+                  <h1 className="mx-auto font-semibold text-lg text-white">1</h1>
+                </div>
+                <div className={`order-1 ${isDarkMode ? 'bg-gray-800/60' : 'bg-white/60'} backdrop-blur-lg rounded-lg shadow-xl w-5/12 px-6 py-4`}>
+                  <h3 className={`mb-1 font-bold ${isDarkMode ? 'text-blue-400' : 'text-blue-600'} text-lg`}>IFTO Campus Paraíso</h3>
+                  <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} mb-1`}>2020 - 2024</p>
+                  <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Sistemas de Informação</p>
+                </div>
+              </div>
+
+              {/* Timeline Item 2 */}
+              <div className="mb-8 flex justify-between flex-row-reverse items-center w-full">
+                <div className="order-1 w-5/12"></div>
+                <div className="z-20 flex items-center order-1 bg-cyan-600 shadow-xl w-8 h-8 rounded-full">
+                  <h1 className="mx-auto font-semibold text-lg text-white">2</h1>
+                </div>
+                <div className={`order-1 ${isDarkMode ? 'bg-gray-800/60' : 'bg-white/60'} backdrop-blur-lg rounded-lg shadow-xl w-5/12 px-6 py-4`}>
+                  <h3 className={`mb-1 font-bold ${isDarkMode ? 'text-cyan-400' : 'text-cyan-600'} text-lg`}>Araci Soluções Digitais</h3>
+                  <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} mb-1`}>2022 - 2023</p>
+                  <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Estágio em Desenvolvimento</p>
+                </div>
+              </div>
+
+              {/* Timeline Item 3 */}
+              <div className="mb-8 flex justify-between items-center w-full">
+                <div className="order-1 w-5/12"></div>
+                <div className="z-20 flex items-center order-1 bg-blue-600 shadow-xl w-8 h-8 rounded-full">
+                  <h1 className="mx-auto font-semibold text-lg text-white">3</h1>
+                </div>
+                <div className={`order-1 ${isDarkMode ? 'bg-gray-800/60' : 'bg-white/60'} backdrop-blur-lg rounded-lg shadow-xl w-5/12 px-6 py-4`}>
+                  <h3 className={`mb-1 font-bold ${isDarkMode ? 'text-blue-400' : 'text-blue-600'} text-lg`}>Sicoob Tocantins</h3>
+                  <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} mb-1`}>2023 - 2024</p>
+                  <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Estágio em Desenvolvimento</p>
+                </div>
+              </div>
+
+              {/* Timeline Item 4 */}
+              <div className="mb-8 flex justify-between flex-row-reverse items-center w-full">
+                <div className="order-1 w-5/12"></div>
+                <div className="z-20 flex items-center order-1 bg-cyan-600 shadow-xl w-8 h-8 rounded-full">
+                  <h1 className="mx-auto font-semibold text-lg text-white">4</h1>
+                </div>
+                <div className={`order-1 ${isDarkMode ? 'bg-gray-800/60' : 'bg-white/60'} backdrop-blur-lg rounded-lg shadow-xl w-5/12 px-6 py-4`}>
+                  <h3 className={`mb-1 font-bold ${isDarkMode ? 'text-cyan-400' : 'text-cyan-600'} text-lg`}>Pós-graduação</h3>
+                  <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} mb-1`}>2025 - 2027</p>
+                  <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Sistemas Computacionais</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-linear-to-br from-blue-500 to-cyan-500 rounded-2xl p-8 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all">
+            <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl p-8 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all">
               <GraduationCap className="w-12 h-12 mb-4" />
               <h3 className="text-xl font-bold mb-3">Formação</h3>
               <p className="text-blue-50 mb-1">Sistemas de Informação</p>
@@ -270,7 +351,7 @@ const Portfolio = () => {
               <p className="text-blue-50 text-sm">Sistemas Computacionais</p>
             </div>
 
-            <div className="bg-linear-to-br from-cyan-500 to-blue-500 rounded-2xl p-8 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all">
+            <div className="bg-gradient-to-br from-cyan-500 to-blue-500 rounded-2xl p-8 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all">
               <Briefcase className="w-12 h-12 mb-4" />
               <h3 className="text-xl font-bold mb-3">Atuação</h3>
               <p className="text-blue-50 mb-1">✦ Empresário - Nortix Code</p>
@@ -278,7 +359,7 @@ const Portfolio = () => {
               <p className="text-blue-50">✦ Desenvolvedor Freelancer</p>
             </div>
 
-            <div className="bg-linear-to-br from-blue-600 to-cyan-600 rounded-2xl p-8 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all">
+            <div className="bg-gradient-to-br from-blue-600 to-cyan-600 rounded-2xl p-8 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all">
               <Award className="w-12 h-12 mb-4" />
               <h3 className="text-xl font-bold mb-3">Especialidades</h3>
               <p className="text-blue-50 mb-1">→ Modernização de Sistemas</p>
@@ -297,19 +378,19 @@ const Portfolio = () => {
         <div className="max-w-6xl mx-auto w-full">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              <span className="bg-linear-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
                 Habilidades Técnicas
               </span>
             </h2>
-            <div className="w-24 h-1 bg-linear-to-r from-blue-500 to-cyan-500 mx-auto rounded-full"></div>
+            <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto rounded-full"></div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white/70 backdrop-blur-lg rounded-3xl p-8 border border-blue-100 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-              <div className="w-16 h-16 bg-linear-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+            <div className={`${isDarkMode ? 'bg-gray-800/70' : 'bg-white/70'} backdrop-blur-lg rounded-3xl p-8 ${isDarkMode ? 'border-blue-700' : 'border-blue-100'} border shadow-xl hover:shadow-2xl transition-all transform hover:scale-105`}>
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
                 <Server className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-6 text-gray-800">Backend</h3>
+              <h3 className={`text-2xl font-bold mb-6 ${isDarkMode ? 'text-gray-100' : 'text-gray-800'}`}>Backend</h3>
               <ul className="space-y-3">
                 {[
                   "PHP (Laravel)",
@@ -323,20 +404,20 @@ const Portfolio = () => {
                 ].map((skill, idx) => (
                   <li
                     key={idx}
-                    className="flex items-center gap-3 text-gray-700"
+                    className={`flex items-center gap-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
                   >
-                    <div className="w-2 h-2 bg-linear-to-r from-blue-500 to-cyan-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full"></div>
                     {skill}
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="bg-white/70 backdrop-blur-lg rounded-3xl p-8 border border-cyan-100 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-              <div className="w-16 h-16 bg-linear-to-br from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+            <div className={`${isDarkMode ? 'bg-gray-800/70' : 'bg-white/70'} backdrop-blur-lg rounded-3xl p-8 ${isDarkMode ? 'border-cyan-700' : 'border-cyan-100'} border shadow-xl hover:shadow-2xl transition-all transform hover:scale-105`}>
+              <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
                 <Smartphone className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-6 text-gray-800">
+              <h3 className={`text-2xl font-bold mb-6 ${isDarkMode ? 'text-gray-100' : 'text-gray-800'}`}>
                 Frontend
               </h3>
               <ul className="space-y-3">
@@ -352,20 +433,20 @@ const Portfolio = () => {
                 ].map((skill, idx) => (
                   <li
                     key={idx}
-                    className="flex items-center gap-3 text-gray-700"
+                    className={`flex items-center gap-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
                   >
-                    <div className="w-2 h-2 bg-linear-to-r from-cyan-500 to-blue-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"></div>
                     {skill}
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="bg-white/70 backdrop-blur-lg rounded-3xl p-8 border border-blue-100 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-              <div className="w-16 h-16 bg-linear-to-br from-blue-600 to-cyan-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+            <div className={`${isDarkMode ? 'bg-gray-800/70' : 'bg-white/70'} backdrop-blur-lg rounded-3xl p-8 ${isDarkMode ? 'border-blue-700' : 'border-blue-100'} border shadow-xl hover:shadow-2xl transition-all transform hover:scale-105`}>
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
                 <Cloud className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-6 text-gray-800">
+              <h3 className={`text-2xl font-bold mb-6 ${isDarkMode ? 'text-gray-100' : 'text-gray-800'}`}>
                 Cloud & Arquitetura
               </h3>
               <ul className="space-y-3">
@@ -381,9 +462,9 @@ const Portfolio = () => {
                 ].map((skill, idx) => (
                   <li
                     key={idx}
-                    className="flex items-center gap-3 text-gray-700"
+                    className={`flex items-center gap-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
                   >
-                    <div className="w-2 h-2 bg-linear-to-r from-blue-600 to-cyan-600 rounded-full"></div>
+                    <div className="w-2 h-2 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full"></div>
                     {skill}
                   </li>
                 ))}
@@ -401,27 +482,27 @@ const Portfolio = () => {
         <div className="max-w-6xl mx-auto w-full">
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              <span className="bg-linear-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
                 Projetos & Experiência
               </span>
             </h2>
-            <div className="w-24 h-1 bg-linear-to-r from-blue-500 to-cyan-500 mx-auto rounded-full"></div>
+            <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto rounded-full"></div>
           </div>
 
           <div className="space-y-8">
-            <div className="bg-white/70 backdrop-blur-lg rounded-3xl p-8 border border-blue-100 shadow-xl hover:shadow-2xl transition-all">
+            <div className={`${isDarkMode ? 'bg-gray-800/70' : 'bg-white/70'} backdrop-blur-lg rounded-3xl p-8 ${isDarkMode ? 'border-blue-700' : 'border-blue-100'} border shadow-xl hover:shadow-2xl transition-all`}>
               <div className="flex items-start gap-6">
-                <div className="w-14 h-14 bg-linear-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg">
+                <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg">
                   <Award className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                  <h3 className={`text-2xl font-bold ${isDarkMode ? 'text-gray-100' : 'text-gray-800'} mb-2`}>
                     Nortix Code
                   </h3>
                   <p className="text-blue-600 font-semibold mb-4">
                     Fundador & Desenvolvedor Full Stack
                   </p>
-                  <p className="text-gray-700 mb-4 leading-relaxed">
+                  <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'} mb-4 leading-relaxed`}>
                     Empresa focada em desenvolvimento de soluções web e sistemas
                     corporativos, oferecendo serviços de modernização, migração
                     de sistemas legados e desenvolvimento de aplicações
@@ -439,19 +520,19 @@ const Portfolio = () => {
               </div>
             </div>
 
-            <div className="bg-white/70 backdrop-blur-lg rounded-3xl p-8 border border-cyan-100 shadow-xl hover:shadow-2xl transition-all">
+            <div className={`${isDarkMode ? 'bg-gray-800/70' : 'bg-white/70'} backdrop-blur-lg rounded-3xl p-8 ${isDarkMode ? 'border-cyan-700' : 'border-cyan-100'} border shadow-xl hover:shadow-2xl transition-all`}>
               <div className="flex items-start gap-6">
-                <div className="w-14 h-14 bg-linear-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg">
+                <div className="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg">
                   <UserRound className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                  <h3 className={`text-2xl font-bold ${isDarkMode ? 'text-gray-100' : 'text-gray-800'} mb-2`}>
                     Run PSO Eventos
                   </h3>
                   <p className="text-cyan-600 font-semibold mb-4">
                     Sistema de Gestão de Eventos
                   </p>
-                  <p className="text-gray-700 mb-4 leading-relaxed">
+                  <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'} mb-4 leading-relaxed`}>
                     Plataforma completa para gestão de eventos com dashboard
                     administrativo, integração com sistemas de pagamento e
                     relatórios em tempo real. Conta com mais de 3000 usuários
@@ -469,20 +550,20 @@ const Portfolio = () => {
               </div>
             </div>
 
-            <div className="bg-white/70 backdrop-blur-lg rounded-3xl p-8 border border-cyan-100 shadow-xl hover:shadow-2xl transition-all">
+            <div className={`${isDarkMode ? 'bg-gray-800/70' : 'bg-white/70'} backdrop-blur-lg rounded-3xl p-8 ${isDarkMode ? 'border-cyan-700' : 'border-cyan-100'} border shadow-xl hover:shadow-2xl transition-all`}>
               <div className="flex items-start gap-6">
-                <div className="w-14 h-14 bg-linear-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg">
+                <div className="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center shrink-0 shadow-lg">
                   <PointerIcon className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                  <h3 className={`text-2xl font-bold ${isDarkMode ? 'text-gray-100' : 'text-gray-800'} mb-2`}>
                     Biipp
                   </h3>
                   <p className="text-cyan-600 font-semibold mb-4">
                     Sistema de afiliados e direcionamento de promoções para
                     influences e blogueiros
                   </p>
-                  <p className="text-gray-700 mb-4 leading-relaxed">
+                  <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'} mb-4 leading-relaxed`}>
                     Plataforma completa para gestão de produtos e canais de
                     vendas, com dashboard administrativo, integração com
                     sistemas de pagamento e relatórios em tempo real.
@@ -499,19 +580,19 @@ const Portfolio = () => {
               </div>
             </div>
 
-            <div className="bg-white/70 backdrop-blur-lg rounded-3xl p-8 border border-blue-100 shadow-xl hover:shadow-2xl transition-all">
+            <div className={`${isDarkMode ? 'bg-gray-800/70' : 'bg-white/70'} backdrop-blur-lg rounded-3xl p-8 ${isDarkMode ? 'border-blue-700' : 'border-blue-100'} border shadow-xl hover:shadow-2xl transition-all`}>
               <div className="flex items-start gap-6">
-                <div className="w-14 h-14 bg-linear-to-br from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center shrink-0 shadow-lg">
+                <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center shrink-0 shadow-lg">
                   <GraduationCap className="w-7 h-7 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                  <h3 className={`text-2xl font-bold ${isDarkMode ? 'text-gray-100' : 'text-gray-800'} mb-2`}>
                     Professor de Programação
                   </h3>
                   <p className="text-blue-600 font-semibold mb-4">
                     Lógica de Programação & Desenvolvimento Web
                   </p>
-                  <p className="text-gray-700 leading-relaxed">
+                  <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'} leading-relaxed`}>
                     Ministro aulas formando novos desenvolvedores com foco em
                     boas práticas e tecnologias modernas, compartilhando
                     conhecimento e experiências do mercado.
@@ -530,14 +611,14 @@ const Portfolio = () => {
       >
         <div className="max-w-4xl mx-auto w-full text-center">
           <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-            <span className="bg-linear-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
               Vamos Trabalhar Juntos?
             </span>
           </h2>
-          <div className="w-24 h-1 bg-linear-to-r from-blue-500 to-cyan-500 mx-auto rounded-full mb-12"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-cyan-500 mx-auto rounded-full mb-12"></div>
 
-          <div className="bg-white/70 backdrop-blur-lg rounded-3xl p-12 border border-blue-100 shadow-2xl">
-            <p className="text-xl text-gray-700 mb-8 leading-relaxed">
+          <div className={`${isDarkMode ? 'bg-gray-800/70' : 'bg-white/70'} backdrop-blur-lg rounded-3xl p-12 ${isDarkMode ? 'border-gray-700' : 'border-blue-100'} border shadow-2xl`}>
+            <p className={`text-xl ${isDarkMode ? 'text-gray-300' : 'text-gray-700'} mb-8 leading-relaxed`}>
               Estou sempre aberto a novos desafios e oportunidades. Entre em
               contato para conversarmos sobre seu projeto!
             </p>
@@ -545,7 +626,7 @@ const Portfolio = () => {
             <div className="flex flex-col sm:flex-row justify-center gap-6 mb-8">
               <a
                 href="mailto:nortixcode@gmail.com.br"
-                className="flex items-center justify-center gap-2 px-8 py-4 bg-linear-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-xl transition-all transform hover:scale-105 shadow-lg text-lg font-semibold"
+                className="flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-xl transition-all transform hover:scale-105 shadow-lg text-lg font-semibold"
               >
                 <Mail className="w-6 h-6" />
                 Enviar E-mail
@@ -570,7 +651,7 @@ const Portfolio = () => {
               </a>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-6 text-gray-600">
+            <div className={`flex flex-wrap justify-center gap-6 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
               <a
                 href="https://github.com/Mr-Reed-11"
                 target="_blank"
@@ -595,10 +676,10 @@ const Portfolio = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-linear-to-r from-blue-600 to-cyan-600 py-8 relative z-10">
+      <footer className="bg-gradient-to-r from-blue-600 to-cyan-600 py-8 relative z-10">
         <div className="max-w-6xl mx-auto px-4 text-center text-white">
           <p className="font-medium">
-            © 2025 Vítor César Gonçalves Ornelas. Todos os direitos reservados.
+            © 2026 Vítor César Gonçalves Ornelas. Todos os direitos reservados.
           </p>
           <p className="mt-2 text-blue-100">
             Desenvolvido com React, TypeScript e Tailwind CSS
