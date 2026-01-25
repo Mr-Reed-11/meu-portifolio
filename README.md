@@ -9,7 +9,7 @@ O objetivo do projeto é servir como **cartão de visita digital**, demonstrando
 ## 🚀 Demonstração
 
 🔗 **Site online:**  
-https://nortixcode.com.br *(ou domínio onde estiver publicado)*
+https://portfolio.nortixcode.com.br
 
 ---
 
@@ -24,7 +24,7 @@ O portfólio foi desenvolvido com foco em:
 - ✔️ **Design moderno com animações suaves**
 
 Ele apresenta seções bem definidas como:
-- Início (Hero)
+- Início
 - Sobre mim
 - Habilidades técnicas
 - Projetos e experiências
